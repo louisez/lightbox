@@ -1,0 +1,46 @@
+h1{
+    margin-top: 3%;
+    text-align: center;
+    font-family: "Open sans", sans-serif;
+    font-weight: 300;
+    color: grey;
+}
+
+#results {
+    display: block;
+    margin: 0 auto;
+    width: 95%;
+    text-align: center;
+}
+
+body {
+    background-color: #fff;
+}
+
+img {
+    margin:0.5%;
+    cursor: pointer;
+}
+
+.overlay {
+    position:fixed;
+    top:0;
+    left:0;
+    height:100%;
+    width:100%;
+    background:black;
+    opacity:0;
+    z-index:0;
+    cursor:pointer;
+}
+        
+.container {
+    visibility: hidden;
+    position:absolute;  	
+    z-index:1;
+}
+
+.rightArrow:hover {
+    visibility: visible;
+}
+     

@@ -1,0 +1,75 @@
+<html>
+    
+    <head>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+        <script src="lightbox.js" type="text/javascript"></script>
+    </head>
+
+    
+    <body>
+        <h1>Louise's Photo Gallery</h1>
+        <div id="results"></div>
+
+        <script>
+            //building flickrAPI url
+            var flickrAPI = "https://api.flickr.com/services/rest/?";
+            flickrAPI += "&method=flickr.people.getPublicPhotos";
+            flickrAPI += "&api_key=a9ddc3467d25ca6995321da7d12a1e66";
+            //my own user id
+            flickrAPI += "&user_id=36368042@N08"
+            flickrAPI += "&format=json";
+            //change JSONP to JSON
+            flickrAPI += "&nojsoncallback=1";
+
+            //AJAX call
+            function loadImages() {
+                var xmlhttp= new XMLHttpRequest();
+                xmlhttp.open("GET",flickrAPI,true);   
+                xmlhttp.send();
+                xmlhttp.onreadystatechange=function(){
+                    if(xmlhttp.readyState==4 && xmlhttp.status==200) {
+                        var data = JSON.parse(xmlhttp.responseText);
+                        var items = data.photos.photo;
+                        //loop through photos and populate gallery
+                        for(var i=0; i<items.length; i++){
+                            var item = data.photos.photo[i];
+                            var farm = item.farm;
+                            var server = item.server;
+                            var id = item.id;
+                            var secret = item.secret;
+                            var src = "http://farm" + item.farm + ".static.flickr.com/" + 
+                                item.server + "/" + item.id + "_" + item.secret +".jpg";
+                            var img = document.createElement("img");
+                            img.src = src;
+                            img.width="250";
+                            img.height="250";
+                            img.id = item.title;
+                            img.className = "thumbnail";
+                            //add event listener to start the lightbox
+                            img.addEventListener("click",  function(e){startLightbox(items)}, false);
+                            document.getElementById("results").appendChild(img); 
+                        }
+                        //add event listeners for navigation
+                        document.addEventListener("click", function(e){displayNext(e, items)},false);
+                        document.addEventListener("click", function(e){displayPrev(e, items)},false);
+                        document.addEventListener("click", function(e){getPosition(e, items)},false);
+//                        document.addEventListener("keydown", function(e){checkKey(e, items)},false);
+
+
+                    } 
+                };
+            };
+            
+            window.onload = function() {
+                loadImages();
+                
+            }
+            
+
+        </script>
+    
+    </body>
+
+</html>
+
